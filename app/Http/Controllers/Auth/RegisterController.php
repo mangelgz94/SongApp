@@ -4,12 +4,18 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Laravel\Socialite\Facades\Socialite;
 
 class RegisterController extends Controller
 {
+
     /*
     |--------------------------------------------------------------------------
     | Register Controller
@@ -49,18 +55,33 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         $validator = Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|max:24|confirmed',
         ]);
-
         $validator->after(function ($validator) use ($data) {
             if (!preg_match('/\d/', $data['password'])) {
                 $validator->errors()->add('password', 'The password does not contain a number.');
             }
         });
 
+
         return $validator;
+    }
+
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            return redirect()->route('register')->withErrors($validator)->withInput();
+        }
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 
     /**
@@ -72,8 +93,8 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'name'     => $data['name'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
     }
