@@ -2,8 +2,8 @@ Vue.component('song', {
     template: `
     <div class="media song-item border">
                 <div class="">
-                    <a href="#">
-                        <img class="media-object" src="/images/play-button.png" alt="...">
+                    <a :href="songUrl">
+                        <img class="media-object" :src="imageUrl" alt="...">
                     </a>
                 </div>
                 <div class="media-body">
@@ -18,12 +18,16 @@ Vue.component('song', {
     `,
     props: {
         selectedMonday: false,
-        selectedFriday: false
+        selectedFriday: false,
+        id: true,
+        image: true
     },
     data() {
         return {
             isActiveMonday: false,
-            isActiveFriday: false
+            isActiveFriday: false,
+            songUrl: '/songs/',
+            imageUrl: ''
         }
     },
     methods: {
@@ -38,7 +42,10 @@ Vue.component('song', {
     },
     mounted() {
         this.isActiveMonday = this.selectedMonday;
-        this.isActiveFriday = this.selectedFriday
+        this.isActiveFriday = this.selectedFriday;
+        this.songUrl += this.id;
+        this.imageUrl = this.image;
+
     }
 });
 

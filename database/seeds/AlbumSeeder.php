@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 
 class AlbumSeeder extends Seeder
 {
+
     /**
      * Run the database seeds.
      *
@@ -12,8 +13,8 @@ class AlbumSeeder extends Seeder
      */
     public function run()
     {
-        Album::firstOrCreate(['name' => 'Rollover Over Beethoven']);
-        Album::firstOrCreate(['name' => 'Beethoven Piano Sonatas']);
-        Album::firstOrCreate(['name' => 'Beatles']);
+        Album::firstOrCreate(['name' => 'Rollover Over Beethoven', 'image_url' => '/images/play-button.png']);
+        Album::firstOrCreate(['name' => 'Beethoven Piano Sonatas', 'image_url' => '/images/play-button.png']);
+        Album::firstOrCreate(['name' => 'Beatles', 'image_url' => '/images/play-button.png']);
     }
 }

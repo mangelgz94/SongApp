@@ -19,6 +19,12 @@
     text-align: center;
 }
 
+#body {
+    min-height: 400px;
+    margin-bottom: 100px;
+    clear: both;
+}
+
 input[type=text] {
     width: 100%;
     border: 2px solid #aaa;

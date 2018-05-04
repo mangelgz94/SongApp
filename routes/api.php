@@ -21,8 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix' => 'songs'], function () {
-        Route::get('/'      , ['as' => 'get_songs'  , 'uses' => 'SongController@index'  ]);
-        Route::get('/{id}'  , ['as' => 'get_song'   , 'uses' => 'SongController@show'   ]);
+        Route::get('/'      , ['as' => 'get_songs'  , 'uses' => 'SongApiController@index'  ]);
+        Route::get('/{id}'  , ['as' => 'get_song'   , 'uses' => 'SongApiController@show'   ]);
     });
 });
 

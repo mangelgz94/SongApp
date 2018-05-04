@@ -2,19 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\SongsManager;
 use App\Song;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class SongController extends ApiController
+class SongApiController extends ApiController
 {
+
+    protected $songsManager;
+
+    /**
+     * SongApiController constructor.
+     * @param $songsManager
+     */
+    public function __construct(SongsManager $songsManager)
+    {
+        $this->songsManager = $songsManager;
+    }
+
 
     public function index()
     {
         try {
-            $songs = Song::with(['artist', 'album'])->get();
+            $songs = $this->songsManager->getPlaylist();
 
             return $this->respond($songs);
         } catch (Exception $e) {
@@ -27,7 +40,7 @@ class SongController extends ApiController
     public function show($id)
     {
         try {
-            $songs = Song::with(['artist', 'album'])->findOrFail($id);
+            $songs = $this->songsManager->getSongFromPlaylist($id);
 
             return $this->respond($songs);
         } catch (ModelNotFoundException $e) {
@@ -40,4 +53,6 @@ class SongController extends ApiController
             return $this->respondInternalError();
         }
     }
+
+
 }
