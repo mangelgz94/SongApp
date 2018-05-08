@@ -1,7 +1,7 @@
 
 ## Recruitment Song App Project
 
-This is the recruitment song app project. This application has the extra next features:
+This is the recruitment song app project. This application has the next extra features:
 
 - Login with social networks
 - Spotify API Integration
